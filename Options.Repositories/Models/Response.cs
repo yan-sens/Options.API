@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 
 namespace Options.Repositories.Models
 {
-    public class Response<T>
+    public class Response<T> : Response
+    {
+        public T? Data { get; set; }
+    }
+
+    public class Response
     {
         public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.OK;
 
         public string ErrorMessage { get; set; } = string.Empty;
-
-        public T? Data { get; set; }
     }
 }
