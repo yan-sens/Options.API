@@ -9,6 +9,8 @@ namespace Options.Repositories.Contracts
 
         Task<Response<Option>> UpdateOptionAsync(Option option);
 
+        Task<Response<Option>> DeleteOptionAsync(Guid optionId);
+
         Task<Response<List<Option>>> GetOptionsAsync(OptionsFilter filter);
 
     }

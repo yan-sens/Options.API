@@ -47,5 +47,17 @@ namespace Options.API.Controllers
             var response = await _optionsRepository.UpdateOptionAsync(mappedOption);
             return Ok(response);
         }
+
+        [HttpDelete("{optionId}")]
+        public async Task<IActionResult> DeleteOptionAsync(Guid optionId)
+        {
+            var response = await _optionsRepository.DeleteOptionAsync(optionId);
+            if(response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return StatusCode((int)response.StatusCode);
+            }
+
+            return Ok(response);
+        }
     }
 }
