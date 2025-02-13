@@ -12,8 +12,8 @@ using Options.DbContext;
 namespace Options.DbContext.Migrations
 {
     [DbContext(typeof(OptionsDBContext))]
-    [Migration("20250212083510_init")]
-    partial class init
+    [Migration("20250213214607_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -280,6 +280,49 @@ namespace Options.DbContext.Migrations
                     b.HasIndex("ParentOptionId");
 
                     b.ToTable("Options");
+                });
+
+            modelBuilder.Entity("Options.DbContext.Models.Setting", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("RegulatoryFee")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Tax")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Settings");
+                });
+
+            modelBuilder.Entity("Options.DbContext.Models.UserProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserProfiles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
