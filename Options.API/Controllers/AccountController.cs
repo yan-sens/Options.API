@@ -47,8 +47,10 @@ namespace Options.API.Controllers
 
                 await _userProfileRepository.CreateUserProfileAsync(userProfile);
             }
-
-            userProfile = response.Data!;
+            else
+            {
+                userProfile = response.Data!;
+            }
 
             return Ok(userProfile);
         }
