@@ -13,6 +13,7 @@ COPY . .
 WORKDIR "/src/Options.API"
 RUN dotnet build "Options.API.csproj" -c $configuration -o /app/build
 
+
 FROM build AS publish
 ARG configuration=Release
 RUN dotnet publish "Options.API.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
