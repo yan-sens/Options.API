@@ -2,7 +2,7 @@
 
 namespace Options.DbContext.Models
 {
-    public class Setting
+    public class Settings
     {
         [Key]
         public required Guid Id { get; set; }

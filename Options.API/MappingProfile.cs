@@ -10,7 +10,7 @@ namespace Options.API
         {
             // Add as many of these lines as you need to map your objects
             CreateMap<Option, OptionRequestModel>().ReverseMap();
-            CreateMap<Setting, UpdateSettingsRequestModel>().ReverseMap();
+            CreateMap<Settings, UpdateSettingsRequestModel>().ReverseMap();
             CreateMap<UserProfile, UserProfileRequestModel>().ReverseMap();
         }
     }

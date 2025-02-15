@@ -5,12 +5,12 @@ namespace Options.Repositories.Contracts
 {
     public interface ISettingsRepository
     {
-        Task<Response<Setting>> CreateSettingAsync(Setting option);
+        Task<Response<Settings>> CreateSettingAsync(Settings option);
 
-        Task<Response<Setting>> UpdateSettingAsync(Setting option);
+        Task<Response<Settings>> UpdateSettingAsync(Settings option);
 
         Task<Response> DeleteSettingAsync(Guid optionId);
 
-        Task<Response<Setting>> GetSettingByUserIdAsync(Guid userId);
+        Task<Response<Settings>> GetSettingByUserIdAsync(Guid userId);
     }
 }

@@ -14,7 +14,7 @@ namespace Options.Repositories.Repositories
             _dBContext = dBContext;
         }
 
-        public async Task<Response<Setting>> CreateSettingAsync(Setting setting)
+        public async Task<Response<Settings>> CreateSettingAsync(Settings setting)
         {
             try
             {
@@ -22,7 +22,7 @@ namespace Options.Repositories.Repositories
 
                 await _dBContext.SaveChangesAsync();
 
-                return new Response<Setting>
+                return new Response<Settings>
                 {
                     StatusCode = System.Net.HttpStatusCode.Created,
                     Data = setting
@@ -30,7 +30,7 @@ namespace Options.Repositories.Repositories
             }
             catch (Exception ex)
             {
-                return new Response<Setting>
+                return new Response<Settings>
                 {
                     StatusCode = System.Net.HttpStatusCode.BadRequest,
                     ErrorMessage = ex.Message,
@@ -71,33 +71,33 @@ namespace Options.Repositories.Repositories
             }
         }
 
-        public async Task<Response<Setting>> GetSettingByUserIdAsync(Guid userId)
+        public async Task<Response<Settings>> GetSettingByUserIdAsync(Guid userId)
         {
             var settings = await _dBContext.Settings.FirstOrDefaultAsync(x => x.UserId == userId);
             if (settings == null)
             {
-                return new Response<Setting>
+                return new Response<Settings>
                 {
                     StatusCode = System.Net.HttpStatusCode.NotFound,
                     ErrorMessage = "Record not found."
                 };
             }
 
-            return new Response<Setting>
+            return new Response<Settings>
             {
                 StatusCode = System.Net.HttpStatusCode.OK,
                 Data = settings
             };
         }
 
-        public async Task<Response<Setting>> UpdateSettingAsync(Setting settings)
+        public async Task<Response<Settings>> UpdateSettingAsync(Settings settings)
         {
             try
             {
                 var settingToUpdate = await _dBContext.Settings.FirstOrDefaultAsync(x => x.UserId == settings.UserId);
                 if (settingToUpdate == null)
                 {
-                    return new Response<Setting>
+                    return new Response<Settings>
                     {
                         StatusCode = System.Net.HttpStatusCode.NotFound,
                         ErrorMessage = "Record not found."
@@ -111,7 +111,7 @@ namespace Options.Repositories.Repositories
 
                 await _dBContext.SaveChangesAsync();
 
-                return new Response<Setting>
+                return new Response<Settings>
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
                     Data = settingToUpdate
@@ -119,7 +119,7 @@ namespace Options.Repositories.Repositories
             }
             catch (Exception ex)
             {
-                return new Response<Setting>
+                return new Response<Settings>
                 {
                     StatusCode = System.Net.HttpStatusCode.BadRequest,
                     ErrorMessage = ex.Message,

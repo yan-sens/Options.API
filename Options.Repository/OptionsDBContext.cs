@@ -8,7 +8,7 @@ namespace Options.DbContext
     {
         public DbSet<Option> Options { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
-        public DbSet<Setting> Settings { get; set; }
+        public DbSet<Settings> Settings { get; set; }
 
         public OptionsDBContext(DbContextOptions options) : base(options)
         {

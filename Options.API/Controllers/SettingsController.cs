@@ -35,11 +35,11 @@ namespace Options.API.Controllers
             if (currentUser == null)
                 return BadRequest();
 
-            Setting settings;
+            Settings settings;
             var response = await _settingsRepository.GetSettingByUserIdAsync(Guid.Parse(currentUser.Id));
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
-                settings = new Setting
+                settings = new Settings
                 {
                     Id = Guid.NewGuid(),
                     UserId = Guid.Parse(currentUser.Id),
@@ -60,7 +60,7 @@ namespace Options.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateUserProfileAsync(UpdateSettingsRequestModel model)
         {
-            var mappedSettings = _mapper.Map<Setting>(model);
+            var mappedSettings = _mapper.Map<Settings>(model);
             var response = await _settingsRepository.UpdateSettingAsync(mappedSettings);
             return Ok(response);
         }
