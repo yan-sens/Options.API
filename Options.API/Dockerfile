@@ -4,7 +4,7 @@ EXPOSE 5191
 
 ENV ASPNETCORE_URLS=http://+:5191
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0-nanoserver-1809 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG configuration=Release
 WORKDIR /src
 COPY ["Options.API/Options.API.csproj", "Options.API/"]
