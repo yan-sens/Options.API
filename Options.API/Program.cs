@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<OptionsDBContext>(options =>
 {
-    options.UseSqlServer("name=DefaultConnection");
+    options.UseSqlServer("name=RemoteConnection");
 });
 
 // Auto Mapper Configurations
