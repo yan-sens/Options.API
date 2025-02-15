@@ -1,5 +1,4 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Options.DbContext;
 using Options.DbContext.Models;
 using Options.Repositories.Contracts;
@@ -15,7 +14,7 @@ namespace Options.Repositories.Repositories
             _dBContext = dBContext;
         }
       
-        public async Task<Models.Response<Option>> CreateOptionAsync(Option option)
+        public async Task<Response<Option>> CreateOptionAsync(Option option)
         {
             try
             {
@@ -23,7 +22,7 @@ namespace Options.Repositories.Repositories
 
                 await _dBContext.SaveChangesAsync();
 
-                return new Models.Response<Option>
+                return new Response<Option>
                 {
                     StatusCode = System.Net.HttpStatusCode.Created,
                     Data = option
@@ -31,7 +30,7 @@ namespace Options.Repositories.Repositories
             }
             catch (Exception ex)
             {
-                return new Models.Response<Option>
+                return new Response<Option>
                 {
                     StatusCode = System.Net.HttpStatusCode.BadRequest,
                     ErrorMessage = ex.Message,
@@ -39,14 +38,14 @@ namespace Options.Repositories.Repositories
             }
         }
 
-        public async Task<Models.Response<Option>> UpdateOptionAsync(Option option)
+        public async Task<Response<Option>> UpdateOptionAsync(Option option)
         {
             try
             {
                 var optionToUpdate = _dBContext.Options.FirstOrDefault(x => x.Id == option.Id);
                 if (optionToUpdate == null)
                 {
-                    return new Models.Response<Option>
+                    return new Response<Option>
                     {
                         StatusCode = System.Net.HttpStatusCode.NotFound,
                         ErrorMessage = "Record not found."
@@ -62,7 +61,7 @@ namespace Options.Repositories.Repositories
 
                 await _dBContext.SaveChangesAsync();
 
-                return new Models.Response<Option>
+                return new Response<Option>
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
                     Data = option
@@ -70,7 +69,7 @@ namespace Options.Repositories.Repositories
             }
             catch (Exception ex)
             {
-                return new Models.Response<Option>
+                return new Response<Option>
                 {
                     StatusCode = System.Net.HttpStatusCode.BadRequest,
                     ErrorMessage = ex.Message,
@@ -78,9 +77,49 @@ namespace Options.Repositories.Repositories
             }
         }
 
-        public async Task<Models.Response<List<Option>>> GetOptionsAsync(OptionsFilter filter)
+        public async Task<Response<Option>> DeleteOptionAsync(Guid optionId)
         {
-            var response = new Models.Response<List<Option>>();
+            try
+            {
+                var optionToRemove = _dBContext.Options.Include(x => x.RollOvers).FirstOrDefault(x => x.Id == optionId);
+                if (optionToRemove == null)
+                {
+                    return new Response<Option>
+                    {
+                        StatusCode = System.Net.HttpStatusCode.NotFound,
+                        ErrorMessage = "Record not found."
+                    };
+                }
+
+                if (optionToRemove.RollOvers != null && optionToRemove.RollOvers.Any())
+                {
+                    optionToRemove.RollOvers.ToList().ForEach(rollOver => {
+                        _dBContext.Remove(rollOver);
+                    });
+                }
+
+                _dBContext.Remove(optionToRemove);
+
+                await _dBContext.SaveChangesAsync();
+
+                return new Response<Option>
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response<Option>
+                {
+                    StatusCode = System.Net.HttpStatusCode.BadRequest,
+                    ErrorMessage = ex.Message,
+                };
+            }
+        }
+
+        public async Task<Response<List<Option>>> GetOptionsAsync(OptionsFilter filter)
+        {
+            var response = new Response<List<Option>>();
 
             var options = await _dBContext.Options
                 .Where(option => option.UserId.Equals(filter.UserId))

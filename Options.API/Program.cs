@@ -35,6 +35,8 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 builder.Services.AddTransient<IOptionsRepository, OptionsRepository>();
+builder.Services.AddTransient<ISettingsRepository, SettingsRepository>();
+builder.Services.AddTransient<IUserProfileRepository, UserProfileRepository>();
 
 var app = builder.Build();
 

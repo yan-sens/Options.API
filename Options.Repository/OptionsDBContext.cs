@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Options.DbContext.Models;
-using System.Reflection.Emit;
-using System.Reflection.Metadata;
 
 namespace Options.DbContext
 {
     public class OptionsDBContext : IdentityDbContext
     {
         public DbSet<Option> Options { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Settings> Settings { get; set; }
 
         public OptionsDBContext(DbContextOptions options) : base(options)
         {

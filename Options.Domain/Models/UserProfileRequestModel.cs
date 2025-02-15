@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Options.DbContext.Models
+﻿namespace Options.Domain.Models
 {
-    public class UserProfile
+    public class UserProfileRequestModel
     {
-        [Key]
         public required Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

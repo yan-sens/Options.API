@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Options.DbContext.Models;
 using Options.Domain.Models;
@@ -15,17 +16,25 @@ namespace Options.API.Controllers
     public class OptionsController : Controller
     {
         private readonly IMapper _mapper;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IOptionsRepository _optionsRepository;
 
-        public OptionsController(IMapper mapper, IOptionsRepository optionsRepository)
+        public OptionsController(IMapper mapper, IOptionsRepository optionsRepository, UserManager<IdentityUser> userManager)
         {
             _mapper = mapper;
             _optionsRepository = optionsRepository;
+            _userManager = userManager;
         }
 
         [HttpPost("filter")]
         public async Task<IActionResult> GetOptionsAsync(OptionsFilter filter)
         {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+                return BadRequest();
+
+            filter.UserId = Guid.Parse(currentUser.Id);
+            
             var response = await _optionsRepository.GetOptionsAsync(filter);
 
             return Ok(response.Data);
@@ -45,6 +54,18 @@ namespace Options.API.Controllers
             model.ReturnAmount = model.Completed ? model.ReturnAmount : model.Worth;
             var mappedOption = _mapper.Map<Option>(model);
             var response = await _optionsRepository.UpdateOptionAsync(mappedOption);
+            return Ok(response);
+        }
+
+        [HttpDelete("{optionId}")]
+        public async Task<IActionResult> DeleteOptionAsync(Guid optionId)
+        {
+            var response = await _optionsRepository.DeleteOptionAsync(optionId);
+            if(response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return StatusCode((int)response.StatusCode);
+            }
+
             return Ok(response);
         }
     }

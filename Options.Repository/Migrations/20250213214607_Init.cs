@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Options.DbContext.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -80,6 +80,34 @@ namespace Options.DbContext.Migrations
                         principalTable: "Options",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Settings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RegulatoryFee = table.Column<double>(type: "float", nullable: false),
+                    Tax = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Settings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserProfiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserProfiles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -253,6 +281,12 @@ namespace Options.DbContext.Migrations
 
             migrationBuilder.DropTable(
                 name: "Options");
+
+            migrationBuilder.DropTable(
+                name: "Settings");
+
+            migrationBuilder.DropTable(
+                name: "UserProfiles");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
